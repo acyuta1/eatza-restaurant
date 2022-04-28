@@ -1,0 +1,176 @@
+version: "3.7"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.1.3
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:5.1.3
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9997:9997"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+#      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9997
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9997
+      KAFKA_JMX_HOSTNAME: kafka
+
+  redis:
+    image: redis:6.2.6-alpine
+    restart: always
+    hostname: redis
+    ports:
+      - 6379:6379
+
+  mysql_db:
+    image: mysql:latest
+    volumes:
+      - ./docker-support/mysql:/var/lib/mysql
+    restart: always
+    ports:
+      - 3366:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: eatza
+      MYSQL_USER: acyuta
+      MYSQL_PASSWORD: 1234
+
+  rabbitmq:
+    image: library/rabbitmq:3.8-management
+    ports:
+      - 5670:5672
+      - 15670:15672
+    volumes:
+      - ./docker-support/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+
+  config-server:
+    image: config-server:0.0.1
+    ports:
+      - 8012:8012
+    environment:
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.host=rabbitmq
+    depends_on:
+      - rabbitmq
+
+  discovery-service:
+    image: discovery-service:0.0.2
+    ports:
+      - 8010:8010
+    environment:
+      - spring.config.import=optional:configserver:http://config-server:8012
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.username=acyuta
+      - spring.rabbitmq.password=password
+    depends_on:
+      - config-server
+
+  api-gateway:
+    image: api-gateway:0.0.1
+    ports:
+      - 8082:8082
+    environment:
+      - spring.config.import=optional:configserver:http://config-server:8012
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.username=acyuta
+      - spring.rabbitmq.password=password
+      - eureka.client.service-url.defaultZone=http://discovery-service:8010/eureka
+    depends_on:
+      - discovery-service
+
+  customer-service:
+    image: customer-service:0.0.2
+    environment:
+      - spring.config.import=optional:configserver:http://config-server:8012
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.username=acyuta
+      - spring.rabbitmq.password=password
+      - eureka.client.service-url.defaultZone=http://discovery-service:8010/eureka
+      - spring.datasource.url=jdbc:mysql://mysql_db:3306/customerdb?createDatabaseIfNotExist=true&useSSL=true
+      - spring.datasource.password=rootpw
+      - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - spring.redis.host=redis
+    depends_on:
+      - api-gateway
+      - config-server
+      - kafka
+      - mysql_db
+    links:
+      - "redis"
+
+  review-service:
+    image: review-service:0.0.3
+    environment:
+      - spring.config.import=optional:configserver:http://config-server:8012
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.username=acyuta
+      - spring.rabbitmq.password=password
+      - eureka.client.service-url.defaultZone=http://discovery-service:8010/eureka
+      - spring.datasource.url=jdbc:mysql://mysql_db:3306/reviewdb?createDatabaseIfNotExist=true&useSSL=true
+      - spring.datasource.password=rootpw
+      - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - spring.redis.host=redis
+    depends_on:
+      - api-gateway
+      - config-server
+      - kafka
+      - mysql_db
+    links:
+      - "redis"
+
+
+  order-service:
+    image: order-service:0.0.3
+    environment:
+      - spring.config.import=optional:configserver:http://config-server:8012
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.username=acyuta
+      - spring.rabbitmq.password=password
+      - eureka.client.service-url.defaultZone=http://discovery-service:8010/eureka
+      - spring.datasource.url=jdbc:mysql://mysql_db:3306/orderdb?createDatabaseIfNotExist=true&useSSL=true
+      - spring.datasource.password=rootpw
+      - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - spring.redis.host=redis
+    depends_on:
+      - api-gateway
+      - config-server
+      - kafka
+      - mysql_db
+    links:
+      - "redis"
+
+
+  restaurantsearch-service:
+    image: restaurantsearch-service:0.0.3
+    environment:
+      - spring.config.import=optional:configserver:http://config-server:8012
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.host=rabbitmq
+      - spring.rabbitmq.username=acyuta
+      - spring.rabbitmq.password=password
+      - eureka.client.service-url.defaultZone=http://discovery-service:8010/eureka
+      - spring.datasource.url=jdbc:mysql://mysql_db:3306/restaurantdb?createDatabaseIfNotExist=true&useSSL=true
+      - spring.datasource.password=rootpw
+      - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka:29092
+      - spring.redis.host=redis
+    depends_on:
+      - api-gateway
+      - config-server
+      - kafka
+      - mysql_db
+    links:
+      - "redis"

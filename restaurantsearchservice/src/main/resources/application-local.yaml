@@ -1,0 +1,22 @@
+spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/restaurantdb
+#    username: root
+#    password: 1234
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+
+#server:
+#  port: 0
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8010/eureka
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

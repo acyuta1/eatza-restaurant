@@ -1,0 +1,24 @@
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/orderdb
+#    username: root
+#    password: 1234
+#
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#
+#    hibernate:
+#      ddl-auto: none
+#
+#server:
+#  port: 0
+#
+#restaurant:
+#  search:
+#    item:
+#      url: http://localhost:8081/item/id/
+#
+#token:
+#  secret: ksajldhjkJAAH123JAKHDkldgksljhgslklsdkgfuekbjzz

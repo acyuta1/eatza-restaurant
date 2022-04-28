@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <include file="./changes/001-create-menu-restaurant-menu-items-tables.sql" relativeToChangelogFile="true" />
+    <include file="./changes/002-add-seed-data.sql" relativeToChangelogFile="true" />
+    <include file="./changes/003-add-review-count-column.sql" relativeToChangelogFile="true" />
+
+</databaseChangeLog>

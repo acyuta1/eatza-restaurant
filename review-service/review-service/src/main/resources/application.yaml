@@ -1,0 +1,25 @@
+#server:
+#  port: 0
+
+spring:
+  application:
+    name: review-service
+  config:
+    import: optional:configserver:http://localhost:8012
+    name: config-server
+#  output:
+#    ansi:
+#      enabled: always
+#  liquibase:
+#    enabled: true
+#    change-log: classpath:db/liquibase/changelog-master.xml
+
+  profiles:
+    active: local
+
+#feign:
+#  client:
+#    config:
+#      stores:
+#        requestInterceptors:
+#          - com.eatza.review.config.BearerAuthFeignConfig

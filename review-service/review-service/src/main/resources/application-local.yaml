@@ -1,0 +1,29 @@
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/reviewdb
+#    username: root
+#    password: 1234
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#    hibernate:
+#      ddl-auto: none
+#    show-sql: true
+
+#customer-management-service:
+#  url: http://localhost:8070
+#
+#order-service:
+#  url: http://localhost:8082
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8010/eureka
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+#token:
+#  secret: ksajldhjkJAAH123JAKHDkldgksljhgslklsdkgfuekbj
+#  expiration_time: 864000000

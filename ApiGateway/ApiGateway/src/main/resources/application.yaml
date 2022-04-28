@@ -1,0 +1,62 @@
+#server:
+#  port: 8082
+#
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:http://localhost:8012
+    name: config-server
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#          lower-case-service-id: true
+#      routes:
+#        - id: customer-service-auth
+#          uri: lb://customer-management-service
+#          predicates:
+#            - Path=/auth/**
+#
+#        - id: customer-service-generic
+#          uri: lb://customer-management-service
+#          predicates:
+#            - Path=/customers/**
+#            - Header=Authorization, Bearer (.*)
+#          filters:
+#            - AuthFilter
+#
+#        - id: orders-service
+#          uri: lb://ordering-service
+#          predicates:
+#            - Path=/order/**
+#            - Header=Authorization, Bearer (.*)
+#          filters:
+#            - AuthFilter
+#
+#        - id: review-service
+#          uri: lb://review-service
+#          predicates:
+#            - Path=/reviews/**
+#            - Header=Authorization, Bearer (.*)
+#          filters:
+#            - AuthFilter
+#
+#        - id: restaurant-search-service
+#          uri: lb://restaurant-search-service
+#          predicates:
+#            - Path=/restaurants/**
+#
+#        - id: restaurant-search-service-item
+#          uri: lb://restaurant-search-service
+#          predicates:
+#            - Path=/item/**
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8010/eureka
+#
+#token:
+#  secret: ksajldhjkJAAH123JAKHDkldgksljhgslklsdkgfuekbj

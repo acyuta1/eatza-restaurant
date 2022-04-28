@@ -1,0 +1,28 @@
+#server:
+#  port: 8010
+#
+#spring:
+#  application:
+#    name: discover-service
+#
+#eureka:
+#  client:
+#    register-with-eureka: false
+#    fetch-registry: false
+#    service-url:
+#      defaultZone: http://localhost:8010/eureka
+
+spring:
+  application:
+    name: discover-service
+
+  config:
+    import: optional:configserver:http://localhost:8012
+    name: config-server
+
+
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        max-attempts: 20

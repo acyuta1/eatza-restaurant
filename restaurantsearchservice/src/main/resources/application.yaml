@@ -1,0 +1,45 @@
+spring:
+
+  application:
+    name: restaurant-search-service
+
+  config:
+    import: optional:configserver:http://localhost:8012
+    name: config-server
+
+
+#feign:
+#  client:
+#    config:
+#      stores:
+#        requestInterceptors:
+#          - com.eatza.restaurantsearch.config.BearerAuthFeignConfig
+
+#  profiles:
+#    active: local
+#  output:
+#    ansi:
+#      enabled: always
+#  liquibase:
+#    enabled: true
+#    change-log: classpath:db/liquibase/changelog-master.xml
+
+#logging:
+#  level:
+#    org:
+#      springframework: error
+#    com:
+#      eatza: debug
+
+#  pattern:
+#    console: %clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8010/eureka
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+#user: user
+#password: password

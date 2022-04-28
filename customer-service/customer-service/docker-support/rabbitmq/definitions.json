@@ -1,0 +1,50 @@
+{
+  "rabbit_version": "3.8.4",
+  "rabbitmq_version": "3.8.4",
+  "product_name": "RabbitMQ",
+  "product_version": "3.8.4",
+  "users": [
+    {
+      "name": "acyuta",
+      "password": "password",
+      "tags": "management"
+    },
+    {
+      "name": "guest",
+      "password_hash": "kI3GCqW5JLMJa4iX1lo7X4D6XbYqlLgxIs30+P6tENUV2POR",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "acyuta",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "exchange": "",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "parameters": []
+}

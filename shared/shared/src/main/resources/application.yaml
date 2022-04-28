@@ -1,0 +1,25 @@
+app:
+  kafka:
+    consumer:
+      concurrency: 1
+      startup-health-check:
+        timeout: 5
+        monitor-health-checks: true
+    topic:
+      partitions:
+        eatza-order-initiated: 1
+      replication-factor:
+        eatza-order-initiated: 1
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web.exposure.include:
+      - health
+      - prometheus
+      - metrics
+token:
+  secret: ksajldhjkJAAH123JAKHDkldgksljhgslklsdkgfuekbj
+  expiration_time: 864000000
